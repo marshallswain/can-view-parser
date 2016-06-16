@@ -61,6 +61,8 @@ var inline = makeMap("a,abbr,acronym,applet,b,basefont,bdo,big,br,button,cite,co
 // (and which close themselves)
 var closeSelf = makeMap("colgroup,dd,dt,li,options,p,td,tfoot,th,thead,tr");
 
+// Elements for which case matters
+
 // Attributes that have their values filled in disabled="disabled"
 // var fillAttrs = makeMap("checked,compact,declare,defer,disabled,ismap,multiple,nohref,noresize,noshade,nowrap,readonly,selected");
 
@@ -90,9 +92,8 @@ var HTMLParser = function (html, handler, returnIntermediate) {
 		});
 	}
 
-
 	function parseStartTag(tag, tagName, rest, unary) {
-		tagName = tagName.toLowerCase();
+		tagName = blacklist.indexOf(tagName) === -1 ? tagName.toLowerCase() : tagName;
 
 		if (block[tagName] && !inline[tagName]) {
 			var last = stack.last();
